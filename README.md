@@ -3,10 +3,8 @@
 A **Shayari Generator** web application that leverages Google Gemini AI to create beautiful and personalized Shayari (poetry) in Hindi based on keywords provided by the user. The app features an interactive user interface built with React and Chakra UI and includes features like dark/light mode toggle and animated feedback.
 
 ## Screenshots
-### Dark Mode
-![Shayari Generator - light Mode with shayri](./image/Screenshot%202024-09-20%20083210.png)
-![Shayari Generator - Dark Mode](./image/Screenshot%202024-09-20%20082410.png)
 
+## Deployed Link
 **[Shayari Generator using Gemini AI - Live Demo]
 
 (https://shayari-gemini.netlify.app/)**
