@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { GoogleGenerativeAI } from '@google/generative-ai';
-import { Spinner } from "@chakra-ui/react";  
+import React, { useState } from "react";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import { Spinner } from "@chakra-ui/react";
 import { BiErrorCircle } from "react-icons/bi";
 import {
   Container,
@@ -17,9 +17,9 @@ import {
   useColorModeValue,
   IconButton,
   VStack,
-} from '@chakra-ui/react';
-import { FaSun, FaMoon } from 'react-icons/fa';
-import { motion } from 'framer-motion';
+} from "@chakra-ui/react";
+import { FaSun, FaMoon } from "react-icons/fa";
+import { motion } from "framer-motion";
 
 // Navbar component
 function Navbar() {
@@ -27,26 +27,26 @@ function Navbar() {
   return (
     <Flex
       as="nav"
-      bg={useColorModeValue('gray.800', 'gray.900')} // Background color for navbar
-      color="white"  // Text color
-      justify="space-between"  // Align items with space between
+      bg={useColorModeValue("gray.800", "gray.900")} // Background color for navbar
+      color="white" // Text color
+      justify="space-between" // Align items with space between
       align="center"
-      p={4}  // Padding
-      mb={8}  // Margin bottom
-      w="100%"  // Full width
-      position="fixed"  // Fixed navbar
-      top={0}  // Stick to top
-      zIndex={1}  // Ensure navbar stays above other content
+      p={4} // Padding
+      mb={8} // Margin bottom
+      w="100%" // Full width
+      position="fixed" // Fixed navbar
+      top={0} // Stick to top
+      zIndex={1} // Ensure navbar stays above other content
     >
       <Text fontSize="xl" fontWeight="bold">
         Shayari Generator using Gemini AI
       </Text>
       <IconButton
-        icon={colorMode === 'light' ? <FaMoon /> : <FaSun />} // Toggle icon based on color mode
+        icon={colorMode === "light" ? <FaMoon /> : <FaSun />} // Toggle icon based on color mode
         onClick={toggleColorMode} // Toggle theme handler
         isRound
         aria-label="Toggle Color Mode"
-        color={useColorModeValue('yellow.400', 'blue.300')} // Icon color
+        color={useColorModeValue("yellow.400", "blue.300")} // Icon color
       />
     </Flex>
   );
@@ -55,7 +55,7 @@ function Navbar() {
 const SparkleButton = motion(Button);
 
 function Shayari() {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const [promptResponses, setPromptResponses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingError, setLoadingError] = useState(false);
@@ -69,22 +69,24 @@ function Shayari() {
     try {
       setLoading(true);
       setLoadingError(false);
-      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       const result = await model.generateContent(`
         You are a skilled poet in Hindi, known for creating beautiful shayaris. 
         I will provide you with a list of keywords, and your task is to write a meaningful 
         and emotional shayari using all the keywords provided. After writing the shayari in Hindi, 
         kindly provide an English translation of the shayari as well. Here are the keywords: ${inputValue}
       `);
-      setInputValue('');
+      setInputValue("");
       const response = result.response;
       const text = await response.text();
-      const [shayari, translation] = text.split('Translation:');
+      const [shayari, translation] = text.split("Translation:");
 
       setPromptResponses([
         {
           shayari: shayari.trim(),
-          translation: translation ? translation.trim() : 'No translation provided',
+          translation: translation
+            ? translation.trim()
+            : "No translation provided",
         },
         ...promptResponses,
       ]);
@@ -92,7 +94,7 @@ function Shayari() {
       setLoading(false);
     } catch (error) {
       console.log(error);
-      console.log('Something went wrong');
+      console.log("Something went wrong");
       setLoading(false);
       setLoadingError(true);
     }
@@ -101,14 +103,19 @@ function Shayari() {
   return (
     <>
       <Navbar />
-      <Container maxW="5xl"  py={12} bg={useColorModeValue('gray.100', 'black')} color={useColorModeValue('black', 'white')}>
+      <Container
+        maxW="5xl"
+        py={12}
+        bg={useColorModeValue("gray.100", "black")}
+        color={useColorModeValue("black", "white")}
+      >
         <Text
           textTransform="uppercase"
           color="blue.400"
           fontWeight={600}
           fontSize="sm"
           textAlign="center"
-          bg={useColorModeValue('blue.50', 'blue.900')}
+          bg={useColorModeValue("blue.50", "blue.900")}
           p={5}
           rounded="md"
           position="relative"
@@ -131,7 +138,10 @@ function Shayari() {
               colorScheme="teal"
               size="lg"
               whileTap={{ scale: 0.9 }}
-              animate={{ rotate: [0, 10, -10, 0], transition: { duration: 0.5 } }}
+              animate={{
+                rotate: [0, 10, -10, 0],
+                transition: { duration: 0.5 },
+              }}
             >
               Generate
             </SparkleButton>
@@ -139,53 +149,61 @@ function Shayari() {
         </SimpleGrid>
 
         {loading && (
-  <Flex justify="center" align="center" mt={5}>
-    <Spinner
-      thickness="4px"
-      speed="0.65s"
-      emptyColor="gray.200"
-      color="teal.500"
-      size="xl"
-    />
-    <Text ml={3} fontSize="lg" fontWeight="bold" color="teal.500">
-      Generating Shayari...
-    </Text>
-  </Flex>
-)}
+          <Flex justify="center" align="center" mt={5}>
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="teal.500"
+              size="xl"
+            />
+            <Text ml={3} fontSize="lg" fontWeight="bold" color="teal.500">
+              Generating Shayari...
+            </Text>
+          </Flex>
+        )}
 
-{loadingError && (
-  <Flex justify="center" align="center" mt={5}>
-    <Box as={BiErrorCircle} color="red.500" size="40px" />
-    <Text ml={3} fontSize="lg" fontWeight="bold" color="red.500">
-      Something went wrong, please try again.
-    </Text>
-  </Flex>
-)}
+        {loadingError && (
+          <Flex justify="center" align="center" mt={5}>
+            <Box as={BiErrorCircle} color="red.500" size="40px" />
+            <Text ml={3} fontSize="lg" fontWeight="bold" color="red.500">
+              Something went wrong, please try again.
+            </Text>
+          </Flex>
+        )}
 
         <VStack spacing={6} mt={10}>
           {promptResponses.map((response, index) => (
             <Box
               key={index}
-              bg={useColorModeValue('gray.50', 'gray.700')}
-              color={useColorModeValue('black', 'white')}
+              bg={useColorModeValue("gray.50", "gray.700")}
+              color={useColorModeValue("black", "white")}
               p={5}
               rounded="md"
               border="1px solid"
-              borderColor={useColorModeValue('gray.300', 'gray.600')}
+              borderColor={useColorModeValue("gray.300", "gray.600")}
               boxShadow="lg"
               textAlign="center"
-              fontWeight={index === 0 ? '700' : 'normal'}
-              style={{ whiteSpace: 'pre-wrap' }}
+              fontWeight={index === 0 ? "700" : "normal"}
+              style={{ whiteSpace: "pre-wrap" }}
             >
               <Text fontWeight="bold" fontSize="xl" mb={2}>
                 Shayari:
               </Text>
-              <Box dangerouslySetInnerHTML={{ __html: response.shayari.replace(/\n/g, '<br />') }} />
+              <Box
+                dangerouslySetInnerHTML={{
+                  __html: response.shayari.replace(/\n/g, "<br />"),
+                }}
+              />
 
               <Text fontWeight="bold" fontSize="xl" mt={4} mb={2}>
                 Translation:
               </Text>
-              <Box dangerouslySetInnerHTML={{ __html: response.translation.replace(/\n/g, '<br />') }} />
+              <Box
+                dangerouslySetInnerHTML={{
+                  __html: response.translation.replace(/\n/g, "<br />"),
+                }}
+              />
             </Box>
           ))}
         </VStack>
